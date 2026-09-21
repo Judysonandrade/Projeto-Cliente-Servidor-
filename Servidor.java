@@ -22,6 +22,16 @@ public class Servidor {
         return clientSocket;
     }
 
+    private long calcularFatorial(int n){
+        long resultado = 1;
+
+        for(int i=1; i<=n;i++){
+            resultado *= i;
+        }
+
+        return resultado;
+    }
+
     private void tratarConexao(Socket clientSocket) {
         try {
             ObjectOutputStream outputStream =
@@ -32,13 +42,15 @@ public class Servidor {
             ObjectInputStream inputStream =
                     new ObjectInputStream(clientSocket.getInputStream());
 
-            String mensagemRecebida = (String) inputStream.readObject();
+            
+            int numero = (Integer) inputStream.readObject();
 
-            System.out.println("Mensagem recebida do cliente: "
-                    + mensagemRecebida);
+            System.out.println("Numero Recebido: "
+                    + numero);
 
-            String resposta = "Servidor recebeu sua mensagem com sucesso: "
-                    + mensagemRecebida;
+            long Fatorial = calcularFatorial(numero);
+
+            String resposta = "O fatorial de " + numero + " e " + Fatorial;
 
             outputStream.writeObject(resposta);
             outputStream.flush();

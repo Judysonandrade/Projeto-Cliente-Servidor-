@@ -2,10 +2,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Cliente {
 
     public static void main(String[] args) {
+
         try {
             Socket socket = new Socket("localhost", 5000);
 
@@ -19,17 +21,19 @@ public class Cliente {
             ObjectInputStream inputStream =
                     new ObjectInputStream(socket.getInputStream());
 
-            String mensagem = "Professor, o cliente conectou-se ao servidor usando comunicacao TCP.";
+            Scanner scanner = new Scanner(System.in);
 
-            System.out.println("Mensagem enviada: " + mensagem);
+            System.out.print("Digite um número para calcular o fatorial: ");
+            int numero = scanner.nextInt();
 
-            outputStream.writeObject(mensagem);
+            outputStream.writeObject(numero);
             outputStream.flush();
 
             String resposta = (String) inputStream.readObject();
 
             System.out.println("Resposta do servidor: " + resposta);
 
+            scanner.close();
             inputStream.close();
             outputStream.close();
             socket.close();
